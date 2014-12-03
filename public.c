@@ -6,90 +6,118 @@ typedef struct
     double (*DN)[2];   //указатели на указатели
 } param_nka_t;
 
-//инициализация массивов
-double DN_ARN_1[][2] = { {0, 3}, {10, 3}, {12, 2.96}, {14, 2.94}, {16,2.92}, {18, 2.935}, {20, 2.925}, \
-            {22, 2.9235}, {24, 2.914}, {29, 2.9}, {60, 1.5}, {90, -2} };
-
-double DN_ARN_2[][2] = { {0, -2}, {20, -1}, {45, 0}, {90, 2}, {180, 3} };
-
-double DN_GLN[20][2] = { {0, 10.7}, {9, 11.763636}, {10, 11.881818}, {11, 12},{12, 12}, \
-                        {15, 12}, {19, 9}, {20, 7}, {21, 5.5}, {22, 4}, {23, 2.7}, \
-                        {24, 1.5}, {25, 0}, {30, -5}, {35, -4.375}, {40, -5.875}, \
-                        {45, -7.875}, {50, -8.25}, {55, -10.875}, {60, -12.75} };
-
-double DN_GPS[20][2] = { {0, 13}, {5, 13.8}, {6, 14}, {8, 14.7}, {9, 14.9}, {10, 15}, \
-                        {19, 14.9}, {20, 14.7}, {21, 13.7}, {22, 6}, {23, 0}, {24, -10}, \
-                        {25, -8}, {30, -5}, {35, -3}, {40, -2}, {45, -3}, {50, -5}, \
-                        {55, -10}, {60, -15} };
-
-double DN_GAL[20][2] = { {0, 13}, {4.36, 13.8}, {5.232, 14}, {6.976, 14.7}, {7.848, 14.9}, \
-                        {8.72, 15}, {9.592, 14.9}, {10.464, 14.7}, {12.2, 13.7}, {15.7, 6}, \
-                        {17.44, 0}, {19.18, -10}, {20, -8}, {20.9, -5}, {22.67, -3}, {26.16, -2}, \
-                        {29.64, -3}, {31.4, -5}, {33.13, -10}, {34.88, -15} };
-
-double DN_COM[20][2] = { {0, 13}, {4.69, 13.8}, {5.63, 14}, {7.5, 14.7}, {8.45, 14.9}, \
-                        {9.4, 15}, {10.33, 14.9}, {11.27, 14.7}, {13.15, 13.7}, {16.9, 6}, \
-                        {18.79, 0}, {20.55, -10}, {21.6, -8}, {22.54, -5}, {24.42, -3}, {28.18, -2}, \
-                        {31.94, -3}, {33.82, -5}, {35.7, -10}, {37.57, -15} };
-.                      
-.
-
-void init_trans_sign(int SRNS, int nf, param_nka_t *paramNKA) //функция инициализации структур
+void init_trans_sign(int SRNS, int nf, param_nka_t *paramNKA)
 {
     switch( SRNS )
     {
-        case 1:     //данные GLONASS
-        {
-            paramNKA->fL = GLN_f01 + nf*GLN_df1; //[Gz]
-            paramNKA->P  = 18.0618;              //[dB]
-            //инициализация ДН
-            paramNKA->DN = DN_GLN;
+    case 1:     //данные GLONASS
+    {
+        paramNKA->fL = GLN_f01 + nf*GLN_df1; //[Gz]
+        paramNKA->P  = 18.0618;              //[dB]
+        //инициализация ДН
+        paramNKA->DN[0][0]  = 0;  paramNKA->DN[0][1]  = 10.7;
+        paramNKA->DN[1][0]  = 9;  paramNKA->DN[1][1]  = 11.763636;
+        paramNKA->DN[2][0]  = 10; paramNKA->DN[2][1]  = 11.881818;
+        paramNKA->DN[3][0]  = 11; paramNKA->DN[3][1]  = 12;
+        paramNKA->DN[4][0]  = 12; paramNKA->DN[4][1]  = 12;
+        paramNKA->DN[5][0]  = 15; paramNKA->DN[5][1]  = 12;
+        paramNKA->DN[6][0]  = 19; paramNKA->DN[6][1]  = 9;
+        paramNKA->DN[7][0]  = 20; paramNKA->DN[7][1]  = 7;
+        paramNKA->DN[8][0]  = 21; paramNKA->DN[8][1]  = 5.5;
+        paramNKA->DN[9][0]  = 22; paramNKA->DN[9][1]  = 4;
+        paramNKA->DN[10][0] = 23; paramNKA->DN[10][1] = 2.7;
+        paramNKA->DN[11][0] = 24; paramNKA->DN[11][1] = 1.5;
+        paramNKA->DN[12][0] = 25; paramNKA->DN[12][1] = 0;
+        paramNKA->DN[13][0] = 30; paramNKA->DN[13][1] = -5;
+        paramNKA->DN[14][0] = 35; paramNKA->DN[14][1] = -4.375;
+        paramNKA->DN[15][0] = 40; paramNKA->DN[15][1] = -5.875;
+        paramNKA->DN[16][0] = 45; paramNKA->DN[16][1] = -7.875;
+        paramNKA->DN[17][0] = 50; paramNKA->DN[17][1] = -8.25;
+        paramNKA->DN[18][0] = 55; paramNKA->DN[18][1] = -10.875;
+        paramNKA->DN[19][0] = 60; paramNKA->DN[19][1] = -12.75;
 
-            break;
-        }
-        case 2:     //данные GPS
-        {
-            paramNKA->fL = 1575420000;           //[Gz]
-            paramNKA->P  = 18.4967;              //[dB]
-
-            paramNKA->DN = DN_GPS;
-            break;
-        }
-        case 3:     //данные GALILEO
-        {
-            paramNKA->fL = 1575420000;           //[Gz]
-            paramNKA->P  = 19.7077;              //[dB]
-
-            paramNKA->DN = DN_GAL;
-            break;
-        }
-        case 4:     //данные COMPASS
-        {
-            paramNKA->fL = 1561098000;           //[Gz]
-            paramNKA->P  = 19.7077;              //[dB]
-
-            paramNKA->DN = DN_COM;
-            break;
-        }
+        break;
     }
-}
-
-либо 
-
-void init_trans_sign(int SRNS, int nf, param_nka_t *paramNKA) //функция инициализации структур
-{
-    switch( SRNS )
+    case 2:     //данные GPS
     {
-        case 1:     //данные GLONASS
-        {
-            paramNKA->fL = GLN_f01 + nf*GLN_df1; //[Gz]
-            paramNKA->P  = 18.0618;              //[dB]
-            //инициализация ДН
-            paramNKA->DN[0][0] = 1; // происзодит инициализация прямо в теле функции, и массивы не являются глобальными 
+        paramNKA->fL = 1575420000;           //[Gz]
+        paramNKA->P  = 18.4967;              //[dB]
 
-            break;
-        }
-        .
-        .
-        .
+        paramNKA->DN[0][0]  = 0;  paramNKA->DN[0][1]  = 13;
+        paramNKA->DN[1][0]  = 5;  paramNKA->DN[1][1]  = 13.8;
+        paramNKA->DN[2][0]  = 6;  paramNKA->DN[2][1]  = 14;
+        paramNKA->DN[3][0]  = 8;  paramNKA->DN[3][1]  = 14.7;
+        paramNKA->DN[4][0]  = 9;  paramNKA->DN[4][1]  = 14.9;
+        paramNKA->DN[5][0]  = 10; paramNKA->DN[5][1]  = 15;
+        paramNKA->DN[6][0]  = 19; paramNKA->DN[6][1]  = 14.9;
+        paramNKA->DN[7][0]  = 20; paramNKA->DN[7][1]  = 14.7;
+        paramNKA->DN[8][0]  = 21; paramNKA->DN[8][1]  = 13.7;
+        paramNKA->DN[9][0]  = 22; paramNKA->DN[9][1]  = 6;
+        paramNKA->DN[10][0] = 23; paramNKA->DN[10][1] = 0;
+        paramNKA->DN[11][0] = 24; paramNKA->DN[11][1] = -10;
+        paramNKA->DN[12][0] = 25; paramNKA->DN[12][1] = -8;
+        paramNKA->DN[13][0] = 30; paramNKA->DN[13][1] = -5;
+        paramNKA->DN[14][0] = 35; paramNKA->DN[14][1] = -3;
+        paramNKA->DN[15][0] = 40; paramNKA->DN[15][1] = -2;
+        paramNKA->DN[16][0] = 45; paramNKA->DN[16][1] = -3;
+        paramNKA->DN[17][0] = 50; paramNKA->DN[17][1] = -5;
+        paramNKA->DN[18][0] = 55; paramNKA->DN[18][1] = -10;
+        paramNKA->DN[19][0] = 60; paramNKA->DN[19][1] = -15;
+        break;
+    }
+    case 3:     //данные GALILEO
+    {
+        paramNKA->fL = 1575420000;           //[Gz]
+        paramNKA->P  = 19.7077;              //[dB]
+
+        paramNKA->DN[0][0]  = 0;       paramNKA->DN[0][1]  = 13;
+        paramNKA->DN[1][0]  = 4.3601;  paramNKA->DN[1][1]  = 13.8;
+        paramNKA->DN[2][0]  = 5.2321;  paramNKA->DN[2][1]  = 14;
+        paramNKA->DN[3][0]  = 6.9761;  paramNKA->DN[3][1]  = 14.7;
+        paramNKA->DN[4][0]  = 7.8481;  paramNKA->DN[4][1]  = 14.9;
+        paramNKA->DN[5][0]  = 8.7201;  paramNKA->DN[5][1]  = 15;
+        paramNKA->DN[6][0]  = 9.5921;  paramNKA->DN[6][1]  = 14.9;
+        paramNKA->DN[7][0]  = 10.4641; paramNKA->DN[7][1]  = 14.7;
+        paramNKA->DN[8][0]  = 12.2081; paramNKA->DN[8][1]  = 13.7;
+        paramNKA->DN[9][0]  = 15.6962; paramNKA->DN[9][1]  = 6;
+        paramNKA->DN[10][0] = 17.4402; paramNKA->DN[10][1] = 0;
+        paramNKA->DN[11][0] = 19.1842; paramNKA->DN[11][1] = -10;
+        paramNKA->DN[12][0] = 20.0562; paramNKA->DN[12][1] = -8;
+        paramNKA->DN[13][0] = 20.9283; paramNKA->DN[13][1] = -5;
+        paramNKA->DN[14][0] = 22.6723; paramNKA->DN[14][1] = -3;
+        paramNKA->DN[15][0] = 26.1603; paramNKA->DN[15][1] = -2;
+        paramNKA->DN[16][0] = 29.6484; paramNKA->DN[16][1] = -3;
+        paramNKA->DN[17][0] = 31.3924; paramNKA->DN[17][1] = -5;
+        paramNKA->DN[18][0] = 33.1364; paramNKA->DN[18][1] = -10;
+        paramNKA->DN[19][0] = 34.8804; paramNKA->DN[19][1] = -15;
+        break;
+    }
+    case 4:     //данные COMPASS
+    {
+        paramNKA->fL = 1561098000;           //[Gz]
+        paramNKA->P  = 19.7077;              //[dB]
+
+        paramNKA->DN[0][0]  = 0;       paramNKA->DN[0][1]  = 13;
+        paramNKA->DN[1][0]  = 4.6972;  paramNKA->DN[1][1]  = 13.8;
+        paramNKA->DN[2][0]  = 5.6367;  paramNKA->DN[2][1]  = 14;
+        paramNKA->DN[3][0]  = 7.5156;  paramNKA->DN[3][1]  = 14.7;
+        paramNKA->DN[4][0]  = 8.4550;  paramNKA->DN[4][1]  = 14.9;
+        paramNKA->DN[5][0]  = 9.3945;  paramNKA->DN[5][1]  = 15;
+        paramNKA->DN[6][0]  = 10.3339; paramNKA->DN[6][1]  = 14.9;
+        paramNKA->DN[7][0]  = 11.2734; paramNKA->DN[7][1]  = 14.7;
+        paramNKA->DN[8][0]  = 13.1523; paramNKA->DN[8][1]  = 13.7;
+        paramNKA->DN[9][0]  = 16.9101; paramNKA->DN[9][1]  = 6;
+        paramNKA->DN[10][0] = 18.789;  paramNKA->DN[10][1] = 0;
+        paramNKA->DN[11][0] = 20.6678; paramNKA->DN[11][1] = -10;
+        paramNKA->DN[12][0] = 21.6073; paramNKA->DN[12][1] = -8;
+        paramNKA->DN[13][0] = 22.5467; paramNKA->DN[13][1] = -5;
+        paramNKA->DN[14][0] = 24.4256; paramNKA->DN[14][1] = -3;
+        paramNKA->DN[15][0] = 28.1834; paramNKA->DN[15][1] = -2;
+        paramNKA->DN[16][0] = 31.9412; paramNKA->DN[16][1] = -3;
+        paramNKA->DN[17][0] = 33.8201; paramNKA->DN[17][1] = -5;
+        paramNKA->DN[18][0] = 35.699;  paramNKA->DN[18][1] = -10;
+        paramNKA->DN[19][0] = 37.5779; paramNKA->DN[19][1] = -15;
+        break;
+    }
+    }
 }
